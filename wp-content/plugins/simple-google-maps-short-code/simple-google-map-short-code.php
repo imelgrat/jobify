@@ -17,7 +17,7 @@ Contributors: mordauk
  * @since       1.0
  * @return      void
 */
-global $pw_map_API_key = '';
+$pw_map_API_key = '';
 
 function pw_map_shortcode( $atts ) {
 global pw_map_API_key;
