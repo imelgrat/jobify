@@ -17,19 +17,24 @@ Contributors: mordauk
  * @since       1.0
  * @return      void
 */
+global $pw_map_API_key = '';
 
 function pw_map_shortcode( $atts ) {
+global pw_map_API_key;
 
 	$atts = shortcode_atts(
 		array(
 			'address' 	=> false,
 			'width' 	=> '100%',
-			'height' 	=> '400px'
+			'height' 	=> '400px',
+			'APIkey'        => '',
 		),
 		$atts
 	);
 
 	$address = $atts['address'];
+	
+	$pw_map_API_key = trim($atts['APIkey']);
 
 	if( $address ) :
 
@@ -77,7 +82,14 @@ add_shortcode( 'pw_map', 'pw_map_shortcode' );
 */
 
 function pw_map_load_scripts() {
-	wp_register_script( 'google-maps-api', 'http://maps.google.com/maps/api/js?sensor=false' );
+	global $pw_map_API_key;
+	$maps_js_script = 'http://maps.google.com/maps/api/js?sensor=false';
+	
+	if(trim($pw_map_API_key) !='' )
+	{
+		$maps_js_script .= '&key='.($pw_map_API_key);
+	}
+	wp_register_script( 'google-maps-api', $maps_js_script);
 }
 add_action( 'wp_enqueue_scripts', 'pw_map_load_scripts' );
 
